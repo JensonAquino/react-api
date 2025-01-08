@@ -51,10 +51,13 @@ const getPosts= () => {
   };
 
   const deletePost = (id) => {
-    const updatedPosts = posts.filter((post) => post.id !== id);
-    setPosts(updatedPosts);
-  };
-
+    console.log("delate", id);
+    axios.delete(`${apiUrl}/posts/${id}`).then((resp) => {
+      console.log(resp)
+      const updatedPosts = menu.filter((post) => post.id != id)
+      setMenu(updatedPosts)
+    })
+  }
   return (
     <>
       <div className="container">
@@ -79,7 +82,7 @@ const getPosts= () => {
               <div className="container text-center">
                 <button
                   className="btn btn-danger mt-2"
-                  onClick={() => deletePost(post.id)}
+                  onClick={() => (deletePost(post.id))}
                 >
                   Elimina Post
                 </button>
