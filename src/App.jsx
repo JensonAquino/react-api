@@ -33,21 +33,19 @@ const getPosts= () => {
 
   const sendPost = (event) => {
     event.preventDefault();
-    setPosts([
-      ...posts,
-      {
-        id: Date.now(),
-        ...formData,
-      },
-    ]);
+    console.log("submit", formData);
 
-    setFormData({
-      title: "",
-      content: "",
-      image: "",
-      category: "",
-      isPublished: false,
-    });
+    axios.post(`${apiUrl}/posts`, formData).then((resp) => {
+      console.log(resp)
+      const newPost = resp.data;
+
+      const newPosts = [
+        ...posts,
+        newPost
+      ]
+      setPosts(newPosts)
+      setFormData(initailData)
+    })
   };
 
   const deletePost = (id) => {
