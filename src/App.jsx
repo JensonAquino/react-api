@@ -1,14 +1,27 @@
-import { useState } from "react";
-
-function App() {
-  const [posts, setPosts] = useState([]);
-  const [formData, setFormData] = useState({
-    title: "",
+import { useEffect, useState } from "react";
+import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
+const initailData = {
+  title: "",
     content: "",
     image: "",
     category: "",
     isPublished: false,
-  });
+}
+function App() {
+  const [posts, setPosts] = useState([]);
+  const [formData, setFormData] = useState(initailData);
+
+useEffect(() => {
+  getPosts();
+}, [])
+
+const getPosts= () => {
+  axios.get(`${apiUrl}/posts`).then((resp) => {
+    console.log(resp);
+    setPosts(resp.data.post)
+  })
+};
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -55,6 +68,7 @@ function App() {
               <div className="card container">
                 <div className="card-body text-center">
                   <h5>{post.title}</h5>
+                  <img src={`${apiUrl}/${post.image}`} alt="" />
                   <p>{post.content}</p>
                   <p><strong>Categoria:</strong> {post.category}</p>
                   <p>
